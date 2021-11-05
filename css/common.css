@@ -13,3 +13,6 @@ a{text-decoration: none;}
 body{
     background-color: #000;
 }
+body::-webkit-scrollbar{
+    width: 0;
+}

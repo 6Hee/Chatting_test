@@ -3,6 +3,7 @@
 header{
     height: 60px;
     background-color: #363636;
+    position: relative;
 }
 header .logo{
     height: 100%;
@@ -17,13 +18,22 @@ header .logo a{
     color: #fff;
 }
 
+header .logo img{
+    position: absolute;
+    top: 50%; right: 20px;
+    height: 30px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+header .logo img:hover{
+    filter: invert(100%);
+}
+
 section{
     height: calc(100vh - 60px);
 
-    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#4c4c4c+0,595959+12,666666+25,474747+39,2c2c2c+50,000000+51,111111+60,2b2b2b+76,1c1c1c+91,131313+100;Black+Gloss+%231 */
     background: rgb(87,90,91);
     background: linear-gradient(0deg, rgba(87,90,91,1) 0%, rgba(33,33,32,1) 100%);
-
 }
 section article{
     height: 85%;
@@ -55,22 +65,17 @@ section article ul li > span{
     background: rgba(0, 0, 0, 0.5);
     padding: 10px;
     border-radius: 8px;
-    display: flex;
-    align-items: center;
-    position: relative;
-    padding-right: 35px;
 }
 section article ul li > span > button{
-    position: absolute;
-    right: 10px;
-    width: 18px;
-    height: 18px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     text-align: center;
     font-size: 12px;
     padding: 0;
     background-color: #f00;
     color: #fff;
+    margin-left: 10px;
     border: none;
     cursor: pointer;
 }
@@ -79,10 +84,14 @@ section article ul li > span > button > span{
     line-height: 8px;
     display: block;
 }
-section article ul li.deleteMsg > span{
+section article ul li > span.deleteMsg{
     background-color: #999;
     color: #555;
 }
+
+section article ul li.mine{text-align: right;}
+section article ul li.mine > span{background-color: #09f;}
+section article ul li.mine > span button{}
 
 section form{
     width: 100%;
@@ -108,6 +117,12 @@ section form input{
     font-size: 15px;
     font-weight: 400;
     border: none;
+}
+
+
+
+.hide{
+    display: none;
 }
 
 @media (min-width : 500px){

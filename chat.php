@@ -11,6 +11,29 @@
     <script src="./js/chat.js"></script>
 </head>
 <body>
+<?php
+    session_start();
+    if(isset($_SESSION["userid"])){
+        $userid = $_SESSION["userid"];
+    }else{
+        $userid = "";
+        echo ("
+            <script>
+                alert('로그인이 필요한 서비스입니다. 로그인 후 이용 바랍니다.');
+                location.href='./main.html';
+            </script>
+        ");
+    }
+    if(isset($_SESSION["username"])){
+        $username = $_SESSION["username"];
+    }else{
+        $username = "";
+    }
+?>
+    <span class="hide" id="user_id"><?=$userid?></span>
+    <span class="hide" id="user_name"><?=$username?></span>
+
+
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-database.js"></script>
 
@@ -29,7 +52,8 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         
-        var userName = prompt("이름을 입력해 주세요.");
+        //var userName = prompt("이름을 입력해 주세요.");
+        var userName = document.getElementById("user_name").innerText;
 
         //#1. 메세지 보내기
         function sendMessage(){
@@ -58,15 +82,31 @@
             console.log(snapshot.val().sender);
             console.log(snapshot.val().message);
 
-            var html = "";
-            html += "<li id='message-"+snapshot.key+"'>";
-            html += "<p>"+snapshot.val().sender+"</p>";
-            html += "<span>"+snapshot.val().message;
-            html += "<button data-id='"+snapshot.key+"' onclick='deleteMessage(this);'><span>×<span></button>";
-            html += "</span>";
-            html += "</li>";
+            if(snapshot.val().sender == userName){
 
-            document.getElementById("messages").innerHTML += html;
+                var html = "";
+                html += "<li class='mine' id='message-"+snapshot.key+"'>";
+                html += "<p>"+snapshot.val().sender+"</p>";
+                html += "<span>"+snapshot.val().message;
+                html += "<button data-id='"+snapshot.key+"' onclick='deleteMessage(this);'><span>×<span></button>";
+                html += "</span>";
+                html += "</li>";
+
+                document.getElementById("messages").innerHTML += html;
+
+            }else{ //타인(들)이 작성한 메세지
+
+                var html = "";
+                html += "<li class='other' id='message-"+snapshot.key+"'>";
+                html += "<p>"+snapshot.val().sender+"</p>";
+                html += "<span>"+snapshot.val().message+"</span>";
+                html += "</li>";
+
+                document.getElementById("messages").innerHTML += html;
+
+            }
+
+
 
             var chatscroll = document.getElementById("messages");
             chatscroll.scrollTop = chatscroll.scrollHeight;
@@ -92,6 +132,8 @@
     <header>
         <div class="logo">
             <a href="">My Chat</a>
+
+            <img src="./img/logout.svg" title="logout" alt="logout" onclick="location.href='./logout.php'">
         </div>
     </header>
     <section>
